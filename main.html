@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¿Quieres ser mi San Valentín? 💘</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome 6 (gratis) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Quicksand', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #1a0010;
+            position: relative;
+            overflow: hidden; /* Evita scroll por elementos aleatorios */
+        }
+
+        /* ===== CARRUSEL DE FONDO ===== */
+        .carrusel-fondo {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .carrusel-fondo img {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            animation: fadeAnimation 25s infinite;
+            filter: brightness(0.7) blur(2px); /* Para que el texto destaque */
+            transition: transform 10s ease;
+        }
+
+        /* Asignamos diferentes tiempos de animación a cada imagen */
+        .carrusel-fondo img:nth-child(1) { animation-delay: 0s; }
+        .carrusel-fondo img:nth-child(2) { animation-delay: 5s; }
+        .carrusel-fondo img:nth-child(3) { animation-delay: 10s; }
+        .carrusel-fondo img:nth-child(4) { animation-delay: 15s; }
+        .carrusel-fondo img:nth-child(5) { animation-delay: 20s; }
+
+        @keyframes fadeAnimation {
+            0% { opacity: 0; transform: scale(1); }
+            8% { opacity: 1; transform: scale(1.05); }
+            17% { opacity: 1; transform: scale(1.1); }
+            25% { opacity: 0; transform: scale(1.15); }
+            100% { opacity: 0; transform: scale(1); }
+        }
+
+        /* ===== CONTENEDOR PRINCIPAL ===== */
+        .contenedor {
+            position: relative;
+            z-index: 10;
+            background: rgba(255, 240, 245, 0.85);
+            backdrop-filter: blur(8px);
+            border-radius: 40px;
+            padding: 30px 25px;
+            max-width: 600px;
+            width: 90%;
+            margin: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            border: 2px solid rgba(255, 200, 220, 0.7);
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            color: #b30047;
+            text-shadow: 2px 2px 0 #ffe6f0;
+            margin-bottom: 20px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .pregunta {
+            font-size: 1.7rem;
+            font-weight: 600;
+            color: #660033;
+            margin-bottom: 30px;
+        }
+
+        /* ===== GIF Y MENSAJE EMOCIONADO ===== */
+        .mensaje-emocion {
+            background: rgba(255, 220, 240, 0.9);
+            border-radius: 50px;
+            padding: 20px;
+            margin-bottom: 25px;
+            border: 3px dashed #ff4d6d;
+            display: none; /* Oculto inicialmente */
+        }
+
+        .mensaje-emocion img {
+            max-width: 150px;
+            border-radius: 20px;
+            margin-bottom: 10px;
+        }
+
+        .mensaje-emocion p {
+            font-size: 1.8rem;
+            color: #cc0052;
+            font-weight: 700;
+        }
+
+        /* ===== BOTONES ===== */
+        .botones {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+            position: relative;
+        }
+
+        .btn {
+            padding: 14px 40px;
+            font-size: 1.5rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 60px;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 8px 0 rgba(0,0,0,0.2);
+            letter-spacing: 2px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-si {
+            background: #ff4d6d;
+            color: white;
+            border: 2px solid #fff0f5;
+        }
+
+        .btn-si:hover {
+            background: #ff1a4f;
+            transform: scale(1.05);
+            box-shadow: 0 10px 0 #990033;
+        }
+
+        .btn-no {
+            background: #2d1b1e;
+            color: #fadadd;
+            border: 2px solid #ffe6eb;
+            position: relative; /* Para moverlo aleatoriamente */
+            z-index: 50;
+        }
+
+        /* Estilo cuando el botón NO se mueve (posición absoluta) */
+        .btn-no.moving {
+            position: absolute;
+            cursor: pointer;
+            box-shadow: 0 8px 0 #1a0b0d;
+        }
+
+        .btn-no:hover {
+            background: #4a2c30;
+        }
+
+        .contador-no {
+            margin-top: 20px;
+            font-size: 1.2rem;
+            color: #800040;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.6);
+            padding: 8px 18px;
+            border-radius: 50px;
+            display: inline-block;
+        }
+
+        /* Video de YouTube (se muestra después de 3 no) */
+        .video-container {
+            margin-top: 25px;
+            width: 100%;
+            max-width: 560px;
+            margin-left: auto;
+            margin-right: auto;
+            display: none;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+            border: 4px solid white;
+        }
+
+        .video-container iframe {
+            width: 100%;
+            height: 315px;
+            border: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 550px) {
+            h1 { font-size: 1.8rem; }
+            .pregunta { font-size: 1.4rem; }
+            .btn { padding: 12px 25px; font-size: 1.3rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- CARRUSEL DE FONDO con imágenes de tu preferencia (corazones, parejas, flores, ositos, etc.) -->
+    <div class="carrusel-fondo">
+        <!-- Puedes cambiar estos links por las imágenes que más te gusten -->
+        <img src="1.jpeg" alt="1">
+        <img src="2.jpeg" alt="2">
+        <img src="3.jpeg" alt="3">
+        <img src="4.jpeg" alt="4">
+        <img src="5.jpeg" alt="5">
+    </div>
+
+    <!-- CONTENEDOR PRINCIPAL -->
+    <div class="contenedor">
+        <h1><i class="fas fa-heart" style="color: #ff1a4f;"></i> San Valentín <i class="fas fa-heart" style="color: #ff1a4f;"></i></h1>
+        <div class="pregunta">
+            💕 ¿Quieres ser mi San Valentín? 💕
+        </div>
+
+        <!-- GIF y mensaje de emoción (oculto al inicio) -->
+        <div id="mensajeEmocion" class="mensaje-emocion">
+            <!-- GIF emocionado (puedes cambiarlo por tu favorito) -->
+            <img src="https://media.tenor.com/0cT1FMZ5qUYAAAAi/bubu-bubu-dudu.gif" alt="Gif feliz">
+            <p>🎉 ¡Sabía que dirías que SÍ! 🎉</p>
+            <p style="font-size: 1.3rem;">💖 Eres la persona más especial 💖</p>
+        </div>
+
+        <!-- BOTONES -->
+        <div class="botones" id="botonesContainer">
+            <button id="btnSi" class="btn btn-si"><i class="fas fa-check-circle"></i> SÍ</button>
+            <button id="btnNo" class="btn btn-no"><i class="fas fa-times-circle"></i> NO</button>
+        </div>
+
+        <!-- Contenedor para el video de YouTube (se muestra tras 3 NOs) -->
+        <div id="videoYoutube" class="video-container">
+            <!-- Video de YouTube: canción romántica o divertida - por ejemplo "Perfect - Ed Sheeran" -->
+            <iframe src="https://www.youtube.com/embed/2Vv-BfVoq4g?autoplay=1&mute=1" title="YouTube video San Valentín" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+    </div>
+
+    <script>
+        // =========================================================
+        // CORAZÓN SAN VALENTÍN: LÓGICA DE BOTONES, CARRUSEL Y VIDEO
+        // =========================================================
+
+        // Elementos del DOM
+        const btnSi = document.getElementById('btnSi');
+        const btnNo = document.getElementById('btnNo');
+        const mensajeEmocion = document.getElementById('mensajeEmocion');
+        const contadorNoSpan = document.getElementById('noCount');
+        const videoYoutube = document.getElementById('videoYoutube');
+        const botonesContainer = document.getElementById('botonesContainer');
+
+        // Variables de estado
+        let noPresionadoCount = 0;          // contador de clics en NO
+        const MAX_NO = 2;                  // si da más de 2 veces que no (a partir del 3er clic)
+
+        // --- FUNCIÓN PARA MOVER EL BOTÓN NO A UN LUGAR ALEATORIO ---
+        function moverBotonNo() {
+            // Solo se mueve si el botón está dentro del flujo normal o ya tiene la clase moving
+            // Asegurar que el botón tenga posición absoluta
+            btnNo.classList.add('moving');
+            
+            // Obtener dimensiones del contenedor de botones y del botón
+            const containerRect = botonesContainer.getBoundingClientRect();
+            const btnRect = btnNo.getBoundingClientRect();
+            
+            // Calcular límites para no salirse del contenedor (con un pequeño margen)
+            const maxX = containerRect.width - btnRect.width - 10;  // 10px de margen derecho
+            const maxY = containerRect.height - btnRect.height - 10; // margen inferior
+            
+            // Si el contenedor es muy pequeño, poner valores por defecto
+            let randomX = 0, randomY = 0;
+            if (maxX > 20 && maxY > 20) {
+                randomX = Math.floor(Math.random() * maxX);
+                randomY = Math.floor(Math.random() * maxY);
+            } else {
+                // Fallback: mover dentro de la ventana (pero ajustado al contenedor)
+                randomX = Math.floor(Math.random() * (window.innerWidth * 0.5));
+                randomY = Math.floor(Math.random() * (window.innerHeight * 0.3));
+            }
+            
+            // Aplicar posición absoluta dentro del contenedor de botones
+            btnNo.style.position = 'absolute';
+            btnNo.style.left = randomX + 'px';
+            btnNo.style.top = randomY + 'px';
+            
+            // Asegurar que el botón no se desborde del contenedor (por si acaso)
+            btnNo.style.maxLeft = (containerRect.width - btnRect.width) + 'px';
+            btnNo.style.maxTop = (containerRect.height - btnRect.height) + 'px';
+        }
+
+        // --- FUNCIÓN PARA REINICIAR EL BOTÓN NO A SU POSICIÓN ORIGINAL (si es necesario) ---
+        function resetBotonNo() {
+            btnNo.classList.remove('moving');
+            btnNo.style.position = '';  // Vuelve al flujo normal
+            btnNo.style.left = '';
+            btnNo.style.top = '';
+        }
+
+        // --- EVENTO DEL BOTÓN SÍ 🩷 ---
+        btnSi.addEventListener('click', function() {
+            // Mostrar mensaje de emoción con gif
+            mensajeEmocion.style.display = 'block';
+            
+            // Opcional: ocultar el contador de NO y el video si estaba visible
+            document.getElementById('contadorNo').style.display = 'none';
+            videoYoutube.style.display = 'none';
+            
+            // Pequeño detalle: deshabilitar botones para que no sigan dando click?
+            btnSi.disabled = true;
+            btnNo.disabled = true;
+            btnSi.style.opacity = '0.7';
+            btnNo.style.opacity = '0.7';
+            btnSi.style.cursor = 'default';
+            btnNo.style.cursor = 'default';
+            
+            // (Opcional) también podemos resetear el botón NO a su lugar si estaba movido
+            resetBotonNo();
+        });
+
+        // --- EVENTO DEL BOTÓN NO (con movida aleatoria y contador) ---
+        btnNo.addEventListener('click', function(event) {
+            // Incrementar contador de NO
+            noPresionadoCount++;
+            contadorNoSpan.textContent = noPresionadoCount;
+
+            // 1. Si es el primer o segundo "NO" -> mover botón aleatoriamente
+            if (noPresionadoCount <= 2) {
+                // Llamar función que mueve el botón a una posición aleatoria DENTRO del contenedor
+                moverBotonNo();
+            } 
+            
+            // 2. Si ya es la tercera vez o más (más de 2) -> mostrar video de YouTube
+            if (noPresionadoCount >= 3) {
+                // Mostrar video
+                videoYoutube.style.display = 'block';
+                // Opcional: ocultar el mensaje de emoción si estaba visible
+                mensajeEmocion.style.display = 'none';
+                // Podemos también resetear el botón a su lugar o dejarlo donde está
+                // Pero para no confundir, lo dejamos visible pero mostramos el video.
+                
+                // Bloquear más clicks en NO? O puedes dejarlo, pero el video ya se ve.
+                // Prevenimos que siga acumulando y mostrando más videos (no afecta)
+                // También cambiamos el mensaje del contador
+                document.getElementById('contadorNo').style.backgroundColor = '#ffe6f0';
+                contadorNoSpan.textContent = noPresionadoCount + ' (¡Ya no insistas! 💔)';
+                
+                // También podemos hacer que el botón NO ya no se mueva más (opcional)
+                // Lo dejamos igual, pero ya no queremos mover porque ya se muestra video.
+                // Pero podemos desactivar el movimiento.
+            }
+
+            // Evitar que el evento se propague si es necesario
+            event.stopPropagation();
+        });
+
+        // --- DETALLE: Si se llega a 3, se muestra el video (y además aseguramos que aparezca) ---
+        // También queremos que si por algún caso dan click después de 3, no haga nada extra.
+        // La validación está arriba.
+
+        // --- INICIAL: Asegurar que el video esté oculto y mensaje oculto ---
+        window.onload = function() {
+            mensajeEmocion.style.display = 'none';
+            videoYoutube.style.display = 'none';
+            contadorNoSpan.textContent = '0';
+            noPresionadoCount = 0;
+            // Asegurar que el botón NO esté en su posición original
+            resetBotonNo();
+        };
+
+        // --- REDIMENSIONAR VENTANA: si el botón está en modo moving, reubicar para que no quede fuera? ---
+        // Opcional: cuando se redimensione la ventana, podemos ajustar la posición para que siga visible.
+        // Pero para simplificar, si redimensiona, el botón podría quedar fuera; podemos resetearlo a su lugar.
+        // Sin embargo, la experiencia sería que al redimensionar pierde la posición, pero no es crítico.
+        // Mejor: al redimensionar, si el botón tiene clase moving, lo movemos de nuevo para que se adapte.
+        window.addEventListener('resize', function() {
+            if (btnNo.classList.contains('moving') && noPresionadoCount < 3) {
+                // Reubicar aleatoriamente dentro del nuevo tamaño
+                moverBotonNo();
+            }
+        });
+
+        // Bonus: Si se hace clic en SÍ después de haber movido el NO, reseteamos el contador también?
+        // Lo dejamos así, pero si quieres reiniciar todo al dar SÍ, se puede extender.
+        // Personalización: Si hacen clic en SÍ, además de mostrar mensaje, podemos ocultar el video y reiniciar contador.
+        // Modificamos el evento de SÍ para que también resetee el contador NO, si el usuario quiere volver a intentar.
+        // Añadimos esa funcionalidad:
+        const eventoSiOriginal = btnSi.click; // no sobreescribimos, mejor extendemos
+        btnSi.removeEventListener('click', function(){});
+        // Volvemos a asignar con más características
+        btnSi.addEventListener('click', function() {
+            // Mostrar mensaje de emoción
+            mensajeEmocion.style.display = 'block';
+            
+            // Ocultar video si estaba visible
+            videoYoutube.style.display = 'none';
+            
+            // Restablecer contador de NO a 0
+            noPresionadoCount = 0;
+            contadorNoSpan.textContent = '0';
+            
+            // Restaurar el botón NO a su lugar original
+            resetBotonNo();
+            
+            // Hacer visible el contador de nuevo (por si se ocultó antes)
+            document.getElementById('contadorNo').style.display = 'inline-block';
+            document.getElementById('contadorNo').style.backgroundColor = 'rgba(255,255,255,0.6)';
+            
+            // Deshabilitar botones? mejor no, por si quieren volver a jugar? 
+            // Pero si ya dijeron SÍ, lo dejamos todo como celebración, deshabilitamos los botones para que no cambien.
+            btnSi.disabled = true;
+            btnNo.disabled = true;
+            btnSi.style.opacity = '0.7';
+            btnNo.style.opacity = '0.7';
+            
+            // Quitamos el efecto de moving y posición
+            btnNo.style.position = '';
+        });
+
+        // Para poder reiniciar la aventura si se ha dado SÍ, podemos añadir un botón de reinicio oculto? 
+        // No es necesario, pero lo dejamos así. Si quieren volver a intentar, recargan la página.
+        // Pero lo hacemos más amigable: cuando se da click en SÍ, además mostramos un mensaje y ocultamos botones? 
+        // Lo hemos deshabilitado. De todas formas, es válido.
+        // Corregimos un pequeño bug: Si dan SÍ, el contador se reinicia y el botón NO se resetea. Perfecto.
+
+        // También aseguramos que el contador se actualice en el HTML.
+        // Y el video, si se llega a 3, se muestra.
+        // Si dan SÍ después de ver el video, el video se oculta y se reinicia.
+
+        // Por último, también podemos hacer que si dan NO 2 veces y luego dan SÍ, todo se reinicie normal.
+        // Ya lo contemplamos.
+
+        // Detalle: Al hacer clic en NO, también queremos que NO se muestre el mensaje de SÍ ni se estorben.
+        // Todo bien.
+    </script>
+
+    <!-- Pequeña nota: Los enlaces de imágenes son libres de Pexels, estilo romántico. 
+    Si deseas cambiar los GIFs o imágenes, solo reemplaza los src. 
+    El video de YouTube es "Perfect - Ed Sheeran" (oficial) con autoplay muted. -->
+</body>
+</html>
