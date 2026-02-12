@@ -378,22 +378,15 @@
             
             // 2. Si ya es la tercera vez o más (más de 2) -> mostrar video de YouTube
             if (noPresionadoCount >= 3) {
-                // Mostrar video
-                videoYoutube.style.display = 'block';
-                // Opcional: ocultar el mensaje de emoción si estaba visible
-                mensajeEmocion.style.display = 'none';
-                // Podemos también resetear el botón a su lugar o dejarlo donde está
-                // Pero para no confundir, lo dejamos visible pero mostramos el video.
+                // Abre YouTube en nueva pestaña
+                window.open('https://www.youtube.com/watch?v=b3rNUhDqciM', '_blank');
                 
-                // Bloquear más clicks en NO? O puedes dejarlo, pero el video ya se ve.
-                // Prevenimos que siga acumulando y mostrando más videos (no afecta)
-                // También cambiamos el mensaje del contador
-                document.getElementById('contadorNo').style.backgroundColor = '#ffe6f0';
-                contadorNoSpan.textContent = noPresionadoCount + ' (Bueno perdon 💔)';
+                // Opcional: Mensaje de que ya se abrió
+                alert('🎵 Video abierto en nueva pestaña. ¡Dale play! 💕');
                 
-                // También podemos hacer que el botón NO ya no se mueva más (opcional)
-                // Lo dejamos igual, pero ya no queremos mover porque ya se muestra video.
-                // Pero podemos desactivar el movimiento.
+                // Opcional: Reiniciar contador para que no siga abriendo más
+                noPresionadoCount = 0;
+                contadorNoSpan.textContent = '0';
             }
 
             // Evitar que el evento se propague si es necesario
