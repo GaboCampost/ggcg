@@ -258,6 +258,28 @@
     </div>
 
     <script>
+        const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwqwYK7sfCiu1v1MOtx0inrB9UZ7m6nIS4RVcNcJvH7_pPIY1ZWMOxt5IQ6Uial0AI/exec';
+
+        // ============================================
+        // FUNCIÓN PARA REGISTRAR RESPUESTAS
+        // ============================================
+        function registrarEnGoogleSheets(tipoRespuesta, intentosNo = 0) {
+          
+          // Construir la URL con los datos
+          const url = new URL(GOOGLE_SHEETS_URL);
+          url.searchParams.append('respuesta', tipoRespuesta);
+          url.searchParams.append('ts', Date.now());
+          url.searchParams.append('contador', intentosNo);
+          url.searchParams.append('ua', navigator.userAgent);
+          
+          // Enviar los datos (usando un "truco" para evitar problemas de CORS)
+          fetch(url, {
+            mode: 'no-cors', // ¡Esto es importante para GitHub Pages!
+            method: 'GET'
+          }).catch(e => console.log('Registro enviado (no-cors):', e));
+          
+          console.log(`📊 Registrado: ${tipoRespuesta}`, intentosNo > 0 ? `(intento #${intentosNo})` : '');
+        }
         // =========================================================
         // CORAZÓN SAN VALENTÍN: LÓGICA DE BOTONES, CARRUSEL Y VIDEO
         // =========================================================
@@ -319,6 +341,7 @@
 
         // --- EVENTO DEL BOTÓN SÍ 🩷 ---
         btnSi.addEventListener('click', function() {
+            registrarEnGoogleSheets('si');
             // Mostrar mensaje de emoción con gif
             mensajeEmocion.style.display = 'block';
             
@@ -340,10 +363,13 @@
 
         // --- EVENTO DEL BOTÓN NO (con movida aleatoria y contador) ---
         btnNo.addEventListener('click', function(event) {
+            // Incrementar contador (esto ya debe estar en tu código)
+
             // Incrementar contador de NO
             noPresionadoCount++;
             contadorNoSpan.textContent = noPresionadoCount;
-
+            // 🆕 REGISTRAR EN GOOGLE SHEETS (con el número de intento)
+            registrarEnGoogleSheets('no', noPresionadoCount);
             // 1. Si es el primer o segundo "NO" -> mover botón aleatoriamente
             if (noPresionadoCount <= 2) {
                 // Llamar función que mueve el botón a una posición aleatoria DENTRO del contenedor
